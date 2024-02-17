@@ -16,22 +16,6 @@ class Store {
   setCarsList = (list) => {
     this.carsList = list;
   };
-  //   getCarsList = () => {
-  //     axios
-  //       .post(API + "carsList", {
-  //         pageSize: 10,
-  //         filters: {
-  //           location: "Yerevan",
-  //         },
-  //       })
-  //       .then((response) => {
-  //         this.setCarsList(response.data.response.result);
-  //         console.log(this.carsList);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   };
   getCarsList = () => {
     this.setLoading(true);
     axios

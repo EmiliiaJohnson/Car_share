@@ -1,0 +1,59 @@
+.card {
+  width: 250px;
+  height: 290px;
+  border-radius: 16px;
+  background: #fffdfd;
+  box-shadow: 0px 0px 9.2px -2px rgba(0, 0, 0, 0.25);
+
+  .shimmerBG {
+    animation: shimmer 3s forwards infinite linear;
+    background: linear-gradient(100deg, #f6f6f6 8%, #e8e8e8c7 18%, #f6f6f6 33%);
+    background-size: 1200px 100%;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1200px 0;
+    }
+    100% {
+      background-position: 1200px 0;
+    }
+  }
+
+  .img {
+    border-radius: 16px 16px 0px 0px;
+    height: 50%;
+  }
+
+  .p-16 {
+    padding: 16px;
+  }
+
+  .line-name {
+    height: 16px;
+    width: 100%;
+    margin-bottom: 12px;
+    border-radius: 20px;
+  }
+
+  .price {
+    width: 40%;
+  }
+
+  .details {
+    width: 60%;
+  }
+
+  .owner-icon {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .owner-name {
+    height: 12px;
+    width: 40%;
+    border-radius: 8px;
+  }
+}
