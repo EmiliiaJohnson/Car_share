@@ -1,9 +1,13 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MainPage from "./components/MainPage/main-page";
 import Header from "./components/Header/header";
+import MainPage from "./components/MainPage/main-page.jsx";
+import InDevelopment from "./components/InDevelopment/in-development";
 
-const routesData = [{ path: "*", element: <MainPage /> }];
+const routesData = [
+  { path: "*", element: <MainPage /> },
+  { path: "/development", element: <InDevelopment /> },
+];
 
 function App() {
   return (

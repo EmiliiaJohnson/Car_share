@@ -1,8 +1,27 @@
 import React, { useEffect } from "react";
-import "./main-page.scss";
-import Loader from "../UI-Components/Loader/loader";
-import locationIcon from "../../assets/images/location.svg";
 import { observer } from "mobx-react-lite";
+import Loader from "../UI-Components/Loader/loader";
+import locationImg from "../../assets/images/location.svg";
+import CarTypeImg from "../../assets/images/car-type.svg";
+import TransmissionTypeImg from "../../assets/images/transmission.svg";
+import SeatsAmount from "../../assets/images/car-seat-amount.svg";
+import {
+  CarsList,
+  CarCard,
+  CarName,
+  ImgWrapper,
+  CarImg,
+  CarInfo,
+  CarOwner,
+  CarOwnerDetails,
+  CarOwnerIcon,
+  CarOwnerLocationIcon,
+  CarOwnerInfo,
+  CarDetails,
+  CarType,
+  CarDetailsIcon,
+  CarDetailsCarIcon,
+} from "./styled-main-page.js";
 
 import store from "../../store/store";
 
@@ -11,6 +30,17 @@ const MainPage = observer(() => {
   useEffect(() => {
     store.getCarsList();
   }, []);
+
+  const getTransmissionType = (transmission) => {
+    switch (transmission) {
+      case "AUTO":
+        return "AT";
+      case "MANUAL":
+        return "MT";
+      default:
+        return "";
+    }
+  };
 
   const getCurrencyCode = (currencyCode) => {
     switch (currencyCode) {
@@ -27,43 +57,57 @@ const MainPage = observer(() => {
 
   return (
     <>
-      <div className="cars-list">
+      <CarsList>
         {store.isLoading ? (
           <Loader />
         ) : (
           store.carsList.map((car, index) => (
-            <div className="car-card" key={index}>
-              <img className="car-image" src={car.imageUrls[0]} alt="car" />
-              <div className="car-info">
-                <p>{car.name}</p>
-                <p className="car-price">
+            <CarCard key={index}>
+              <ImgWrapper>
+                <CarImg src={car.imageUrls[0]} alt="car" />
+              </ImgWrapper>
+
+              <CarInfo>
+                <CarName>{car.name}</CarName>
+                <p>
                   {car.price.amount}
                   {getCurrencyCode(car.price.currencyCode)}/
                   {car.price.priceType === "PER_DAY" ? "day" : "hour"}
                 </p>
-                <div className="car-owner">
-                  <div className="car-owner_details">
-                    <img
-                      className="car-owner_icon"
-                      src={car.owner.avatarUrl}
-                      alt="car owner"
+
+                <CarDetails>
+                  <CarType>
+                    <CarDetailsCarIcon src={CarTypeImg} alt="car type" />
+                    <p>{car.carType[0] + car.carType.slice(1).toLowerCase()}</p>
+                  </CarType>
+                  <CarType>
+                    <CarDetailsIcon src={SeatsAmount} alt="car seats" />
+                    <p>{car.numberOfSeats}</p>
+                  </CarType>
+                  <CarType>
+                    <CarDetailsIcon
+                      src={TransmissionTypeImg}
+                      alt="transmission type"
                     />
-                    <p className="car-owner_name car-owner-p">
-                      {car.owner.name}
-                    </p>
-                  </div>
-                  <div className="car-owner_details">
-                    <img src={locationIcon} alt="location" />
-                    <p className="car-owner_location car-owner-p">
-                      {car.location.location}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+                    <p>{getTransmissionType(car.transmissionType)}</p>
+                  </CarType>
+                </CarDetails>
+
+                <CarOwnerDetails>
+                  <CarOwner>
+                    <CarOwnerIcon src={car.owner.avatarUrl} />
+                    <CarOwnerInfo>{car.owner.name}</CarOwnerInfo>
+                  </CarOwner>
+                  <CarOwner>
+                    <CarOwnerLocationIcon src={locationImg} alt="location" />
+                    <CarOwnerInfo>{car.location.location}</CarOwnerInfo>
+                  </CarOwner>
+                </CarOwnerDetails>
+              </CarInfo>
+            </CarCard>
           ))
         )}
-      </div>
+      </CarsList>
       <aside className="filters"></aside>
     </>
   );
