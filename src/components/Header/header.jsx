@@ -1,34 +1,26 @@
 import React from "react";
 import {
   StyledHeader,
-  LocationWrapper,
+  // LocationWrapper,
+  // LocationName,
   HeaderIcon,
-  LocationName,
   Navigation,
   NavigationLink,
   Title,
 } from "./styled-header";
 import userIcon from "../../assets/images/user-icon.svg";
-import locationIcon from "../../assets/images/location.svg";
+// import locationIcon from "../../assets/images/location.svg";
 
 const Header = () => {
   return (
     <StyledHeader>
       <Navigation>
-        {/* Link to location change */}
-        <LocationWrapper>
-          <HeaderIcon src={locationIcon} alt="location" />
-          <LocationName>Yerevan</LocationName>
-        </LocationWrapper>
         <div>
-          <NavigationLink to="/main">List</NavigationLink>
+          <NavigationLink to="/">List</NavigationLink>
           <NavigationLink to="/development">History</NavigationLink>
         </div>
-        <Title to="/main">Car share</Title>
-        {/* <NavigationLink to="/development">
-          <p>UserName</p>
-          <HeaderIcon src={userIcon} alt="user menu" />
-        </NavigationLink> */}
+        <Title to="/">Car share</Title>
+
         <div to="/development">
           <p>UserName</p>
           <HeaderIcon src={userIcon} alt="user menu" />

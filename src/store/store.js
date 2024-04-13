@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const API = "http://185.253.75.46/";
+export const API = "http://185.253.75.46/";
 const { makeAutoObservable } = require("mobx");
+
 class Store {
   constructor() {
     makeAutoObservable(this);
@@ -16,14 +17,12 @@ class Store {
   setCarsList = (list) => {
     this.carsList = list;
   };
+
   getCarsList = () => {
     this.setLoading(true);
     axios
       .post(API + "carsList", {
         pageSize: 10,
-        filters: {
-          location: "Yerevan",
-        },
       })
       .then((response) => {
         this.setCarsList(response.data.response.result);
@@ -33,6 +32,19 @@ class Store {
       .catch((err) => {
         console.log(err);
         this.setLoading(false);
+      });
+  };
+
+  getPriceRange = (location) => {
+    axios
+      .post(API + "priceRange", {
+        location: location,
+      })
+      .then((response) => {
+        console.log(response.data.response);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 }

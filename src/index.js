@@ -48,6 +48,7 @@ body {
   background-color: var(--backgroung-color);
 }
 main {
+  display: flex;
   padding: 30px 40px;
 };`;
 

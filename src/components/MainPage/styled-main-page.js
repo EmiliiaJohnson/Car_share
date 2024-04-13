@@ -76,6 +76,7 @@ export const CarOwnerDetails = styled.div`
   align-items: center;
   justify-content: space-between;
   font-size: 14px;
+  font-family: var(--gilroy-medium);
 `;
 
 export const CarOwner = styled.div`

@@ -22,7 +22,7 @@
 
   .img {
     border-radius: 16px 16px 0px 0px;
-    height: 50%;
+    height: 140px;
   }
 
   .p-16 {
@@ -49,6 +49,11 @@
     height: 25px;
     border-radius: 50%;
     margin-right: 10px;
+  }
+
+  .car-owner {
+    display: flex;
+    align-items: center;
   }
 
   .owner-name {

@@ -5,7 +5,7 @@ import MainPage from "./components/MainPage/main-page.jsx";
 import InDevelopment from "./components/InDevelopment/in-development";
 
 const routesData = [
-  { path: "*", element: <MainPage /> },
+  { path: "/", element: <MainPage /> },
   { path: "/development", element: <InDevelopment /> },
 ];
 

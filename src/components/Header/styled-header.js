@@ -17,10 +17,14 @@ export const StyledHeader = styled.header`
   backdrop-filter: blur(15px);
 `;
 
-export const LocationWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
+// export const LocationWrapper = styled.div`
+//   display: flex;
+//   align-items: center;
+// `;
+
+// export const LocationName = styled.p`
+//   font-size: 20px;
+// `;
 
 export const HeaderIcon = styled.img`
   height: 35px;
@@ -28,14 +32,11 @@ export const HeaderIcon = styled.img`
   margin: auto;
 `;
 
-export const LocationName = styled.p`
-  font-size: 20px;
-`;
-
 export const Navigation = styled.nav`
   display: grid;
-  grid-template-columns: repeat(1, 1fr 3fr 7fr 4fr);
+  grid-template-columns: repeat(1, 4fr 7fr 4fr);
   align-items: center;
+  width: 100%;
 `;
 
 export const NavigationLink = styled(NavLink)`

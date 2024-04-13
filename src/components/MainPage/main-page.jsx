@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import Loader from "../UI-Components/Loader/loader";
+import Filters from "../Filters/filters.jsx";
 import locationImg from "../../assets/images/location.svg";
 import CarTypeImg from "../../assets/images/car-type.svg";
 import TransmissionTypeImg from "../../assets/images/transmission.svg";
 import SeatsAmount from "../../assets/images/car-seat-amount.svg";
+import store from "../../store/store.js";
 import {
   CarsList,
   CarCard,
@@ -23,10 +25,7 @@ import {
   CarDetailsCarIcon,
 } from "./styled-main-page.js";
 
-import store from "../../store/store";
-
 const MainPage = observer(() => {
-  document.title = "Car Share";
   useEffect(() => {
     store.getCarsList();
   }, []);
@@ -37,8 +36,10 @@ const MainPage = observer(() => {
         return "AT";
       case "MANUAL":
         return "MT";
+      case "OTHER":
+        return "Other";
       default:
-        return "";
+        return "unknown";
     }
   };
 
@@ -108,7 +109,9 @@ const MainPage = observer(() => {
           ))
         )}
       </CarsList>
-      <aside className="filters"></aside>
+      <aside className="filters">
+        <Filters />
+      </aside>
     </>
   );
 });
