@@ -38,7 +38,7 @@ const Global = createGlobalStyle`
   box-sizing:border-box;  
 }::selection {
   color: #fff;
-  background-color: #644be4;
+  background-color: var(--primary-color);
 }
 body {
   font-family: var(--gilroy-regular);

@@ -17,15 +17,6 @@ export const StyledHeader = styled.header`
   backdrop-filter: blur(15px);
 `;
 
-// export const LocationWrapper = styled.div`
-//   display: flex;
-//   align-items: center;
-// `;
-
-// export const LocationName = styled.p`
-//   font-size: 20px;
-// `;
-
 export const HeaderIcon = styled.img`
   height: 35px;
   width: 35px;

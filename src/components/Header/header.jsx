@@ -1,15 +1,12 @@
 import React from "react";
 import {
   StyledHeader,
-  // LocationWrapper,
-  // LocationName,
   HeaderIcon,
   Navigation,
   NavigationLink,
   Title,
 } from "./styled-header";
 import userIcon from "../../assets/images/user-icon.svg";
-// import locationIcon from "../../assets/images/location.svg";
 
 const Header = () => {
   return (

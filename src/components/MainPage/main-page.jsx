@@ -79,7 +79,7 @@ const MainPage = observer(() => {
                 <CarDetails>
                   <CarType>
                     <CarDetailsCarIcon src={CarTypeImg} alt="car type" />
-                    <p>{car.carType[0] + car.carType.slice(1).toLowerCase()}</p>
+                    <p>{store.setWordToLowerCase(car.carType)}</p>
                   </CarType>
                   <CarType>
                     <CarDetailsIcon src={SeatsAmount} alt="car seats" />
