@@ -6,7 +6,7 @@ export const Form = styled.form`
   background-color: #fff;
 `;
 
-export const Checkpoint = styled.img`
-  z-index: 2;
-  margin-right: -7px;
+export const Title = styled.h3`
+  font-family: var(--gilroy-bold);
+  font-size: 30px;
 `;

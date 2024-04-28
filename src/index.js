@@ -48,7 +48,8 @@ body {
   background-color: var(--backgroung-color);
 }
 main {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(1, 2fr 1fr);
   padding: 30px 40px;
 };`;
 

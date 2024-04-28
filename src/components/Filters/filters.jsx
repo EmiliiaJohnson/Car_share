@@ -2,14 +2,24 @@ import React, { useState, useEffect } from "react";
 import Checkbox from "@mui/joy/Checkbox";
 import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
-import { Form, Checkpoint } from "./styled-filters.js";
-import checkpoint from "../../assets/images/checkpoint.svg";
-
-import { ConfigProvider, Slider } from "antd";
-import store from "../../store/store";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import {
+  Select,
+  InputLabel,
+  OutlinedInput,
+  MenuItem,
+  Box,
+  Slider,
+  FormControlLabel,
+  Radio,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+} from "@mui/material";
+import { Form, Title } from "./styled-filters.js";
 import axios from "axios";
-import { API } from "../../store/store";
-import { carTypes } from "../../store/store";
+import store from "../../store/store";
+import { API, carTypes } from "../../store/store";
 
 const Filters = () => {
   useEffect(() => {
@@ -35,7 +45,6 @@ const Filters = () => {
       filterItems.price.priceType === "PER_DAY" ? "PER_DAY" : "PER_HOUR";
     if (!priceData[selectedPriceType]) {
       console.error(`No price data found for ${selectedPriceType}`);
-
       const availablePriceType = Object.keys(priceData)[0];
       setFilterItems((prevFilters) => ({
         ...prevFilters,
@@ -108,7 +117,6 @@ const Filters = () => {
         [name]: value,
       }));
     }
-    console.log(filterItems);
   };
 
   const handleSliderChange = (values) => {
@@ -117,14 +125,15 @@ const Filters = () => {
       price: {
         ...prevFilters.price,
         priceRange: {
-          from: values[0],
-          to: values[1],
+          from: values.target.value[0],
+          to: values.target.value[1],
         },
       },
     }));
   };
 
   const handleSubmit = (e) => {
+    console.log(filterItems);
     e.preventDefault();
     let filters = { ...filterItems };
     store.setLoading(true);
@@ -166,59 +175,80 @@ const Filters = () => {
 
   return (
     <Form method="post" onSubmit={handleSubmit}>
-      <label>
-        Location
-        <select onChange={handleChange} name="location">
-          <option value="">All</option>
-          <option value="Yerevan">Yerevan</option>
-          <option value="Gyumri">Gyumri</option>
-          <option value="Samara">Samara</option>
-        </select>
-      </label>
+      <Title>Filters</Title>
+      <InputLabel>Location</InputLabel>
+      <Select
+        value={filterItems.location}
+        name="location"
+        onChange={handleChange}
+        input={<OutlinedInput label="Location" />}
+      >
+        <MenuItem value="">All</MenuItem>
+        <MenuItem value="Yerevan">Yerevan</MenuItem>
+        <MenuItem value="Gyumri">Gyumri</MenuItem>
+        <MenuItem value="Samara">Samara</MenuItem>
+      </Select>
       Price
-      <label>
-        Per day
-        <input
-          type="checkbox"
-          name="priceType"
-          value="PER_DAY"
-          checked={filterItems.price.priceType.includes("PER_DAY")}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Per hour
-        <input
-          type="checkbox"
-          name="priceType"
-          value="PER_HOUR"
-          checked={filterItems.price.priceType.includes("PER_HOUR")}
-          onChange={handleChange}
-        />
-      </label>
+      <FormControlLabel
+        label="Per day"
+        control={
+          <Checkbox
+            sx={{
+              "& .MuiSvgIcon-root": {
+                backgroundColor: "var(--primary-color)",
+                borderRadius: "4px",
+              },
+            }}
+            size="sm"
+            name="priceType"
+            value="PER_DAY"
+            checked={filterItems.price.priceType.includes("PER_DAY")}
+            disabled={filterItems.price.priceType === "PER_DAY"}
+            onChange={handleChange}
+          />
+        }
+        sx={{
+          "& .MuiFormControlLabel-label": {
+            fontSize: 14,
+            fontFamily: "var(--gilroy-medium)",
+          },
+        }}
+      />
+      <FormControlLabel
+        label="Per hour"
+        control={
+          <Checkbox
+            sx={{
+              "& .MuiSvgIcon-root": {
+                backgroundColor: "var(--primary-color)",
+                borderRadius: "4px",
+              },
+            }}
+            size="sm"
+            name="priceType"
+            value="PER_HOUR"
+            checked={filterItems.price.priceType.includes("PER_HOUR")}
+            disabled={filterItems.price.priceType === "PER_HOUR"}
+            onChange={handleChange}
+          />
+        }
+        sx={{
+          "& .MuiFormControlLabel-label": {
+            fontSize: 14,
+            fontFamily: "var(--gilroy-medium)",
+          },
+        }}
+      />
       {!filterItems.price.priceType.includes("PER_DAY, PER_HOUR") &&
         !filterItems.price.priceType.includes("PER_HOUR, PER_DAY") && (
           <div>
-            <ConfigProvider
-              theme={{
-                components: {
-                  Slider: {
-                    dotActiveBorderColor: "#644BE4",
-                    dotBorderColor: "#644BE4",
-                    handleActiveColor: "#644BE4",
-                    handleColor: "#644BE4",
-                    railBg: "#EDE9FF",
-                    railHoverBg: "#E3DEFF",
-                    trackBg: "#644BE4",
-                    trackHoverBg: "#644BE4",
-                  },
-                },
-              }}
-            >
+            <Box>
               <Slider
-                range
+                sx={{
+                  color: "var(--primary-color)",
+                }}
                 step={100}
-                defaultValue={[
+                value={[
                   filterItems.price.priceRange.from,
                   filterItems.price.priceRange.to,
                 ]}
@@ -231,88 +261,123 @@ const Filters = () => {
                   (store.priceRangeType[filterItems.price.priceType] || {})
                     .to || 1000000
                 }
+                valueLabelDisplay="auto"
               />
-            </ConfigProvider>
-            <div>
-              Sorting order
-              <label>
-                Low to high
-                <input
-                  type="radio"
-                  name="sortingOrder"
-                  value="LOW_TO_HIGH"
-                  checked={filterItems.price.sortingOrder === "LOW_TO_HIGH"}
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                High to low
-                <input
-                  type="radio"
-                  name="sortingOrder"
-                  value="HIGH_TO_LOW"
-                  checked={filterItems.price.sortingOrder === "HIGH_TO_LOW"}
-                  onChange={handleChange}
-                />
-              </label>
-            </div>
-            <div role="group" aria-labelledby="rank">
-              <List
-                orientation="horizontal"
-                wrap
-                sx={{
-                  "--List-gap": "8px",
-                  "--ListItem-radius": "20px",
-                  "--ListItem-minHeight": "32px",
-                  "--ListItem-gap": "4px",
-                }}
+            </Box>
+
+            <FormControl>
+              <FormLabel
+                sx={{ color: "#000", "&.Mui-focused": { color: "#000" } }}
               >
-                {carTypes.map((item) => (
-                  <ListItem key={item}>
-                    <Checkbox
-                      name="carTypes"
-                      style={{
-                        fontFamily: "var(--gilroy-medium)",
-                        color: "#000",
-                      }}
-                      disableIcon
-                      overlay
-                      label={store.setWordToLowerCase(item)}
-                      value={item}
-                      checked={filterItems.carTypes.includes(item)}
-                      onChange={handleChange}
-                      variant={
-                        filterItems.carTypes.includes(item)
-                          ? "soft"
-                          : "outlined"
-                      }
-                      slotProps={{
-                        action: ({ checked }) => ({
-                          sx: checked
-                            ? {
-                                height: "32px",
-                                border: "none",
-                                backgroundColor: "#E3DEFF",
-                                "&:hover": {
-                                  backgroundColor: "#E3DEFF",
-                                },
-                              }
-                            : {
-                                height: "32px",
-                                border: "1px solid #644BE4",
-                              },
-                        }),
+                Sorting order
+              </FormLabel>
+              <RadioGroup defaultValue="LOW_TO_HIGH" onChange={handleChange}>
+                <FormControlLabel
+                  value="LOW_TO_HIGH"
+                  control={
+                    <Radio
+                      sx={{
+                        "&.Mui-checked": {
+                          color: "var(--primary-color)",
+                        },
+                        "& .MuiFormControlLabel-label": {
+                          fontSize: 14,
+                          fontFamily: "var(--gilroy-semibold)",
+                        },
                       }}
                     />
-                    {filterItems.carTypes.includes(item) && (
-                      <Checkpoint src={checkpoint} alt="" />
-                    )}
-                  </ListItem>
-                ))}
-              </List>
-            </div>
+                  }
+                  label="Low to high"
+                  sx={{
+                    "& .MuiFormControlLabel-label": {
+                      fontSize: 14,
+                      fontFamily: "var(--gilroy-semibold)",
+                    },
+                  }}
+                />
+                <FormControlLabel
+                  value="HIGH_TO_LOW"
+                  control={
+                    <Radio
+                      sx={{
+                        "&.Mui-checked": {
+                          color: "var(--primary-color)",
+                        },
+                        "& .MuiFormControlLabel-label": {
+                          fontSize: 14,
+                          fontFamily: "var(--gilroy-semibold)",
+                        },
+                      }}
+                    />
+                  }
+                  label="High to low"
+                  sx={{
+                    "& .MuiFormControlLabel-label": {
+                      fontSize: 14,
+                      fontFamily: "var(--gilroy-semibold)",
+                    },
+                  }}
+                />
+              </RadioGroup>
+            </FormControl>
           </div>
         )}
+      <div role="group" aria-labelledby="rank">
+        <List
+          orientation="horizontal"
+          wrap
+          sx={{
+            "--List-gap": "8px",
+            "--ListItem-radius": "20px",
+            "--ListItem-minHeight": "32px",
+            "--ListItem-gap": "4px",
+          }}
+        >
+          {carTypes.map((item) => (
+            <ListItem key={item}>
+              <Checkbox
+                name="carTypes"
+                style={{
+                  fontFamily: "var(--gilroy-medium)",
+                  color: "#000",
+                }}
+                disableIcon
+                overlay
+                label={store.setWordToLowerCase(item)}
+                value={item}
+                checked={filterItems.carTypes.includes(item)}
+                onChange={handleChange}
+                variant={
+                  filterItems.carTypes.includes(item) ? "soft" : "outlined"
+                }
+                slotProps={{
+                  action: ({ checked }) => ({
+                    sx: checked
+                      ? {
+                          height: "32px",
+                          border: "none",
+                          backgroundColor: "var(--secondary-color)",
+                          "&:hover": {
+                            backgroundColor: "var(--secondary-color)",
+                          },
+                        }
+                      : {
+                          height: "32px",
+                          border: "1px solid var(--primary-color)",
+                        },
+                  }),
+                }}
+              />
+              {filterItems.carTypes.includes(item) && (
+                <CheckCircleIcon
+                  style={{ color: "var(--primary-color)", marginRight: "-7px" }}
+                  sx={{ ml: -0.5, zIndex: 2, pointerEvents: "none" }}
+                />
+              )}
+            </ListItem>
+          ))}
+        </List>
+      </div>
       <button type="submit">Apply filters</button>
     </Form>
   );
