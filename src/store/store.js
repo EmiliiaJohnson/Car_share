@@ -1,6 +1,12 @@
 import axios from "axios";
 
 export const API = "http://185.253.75.46/";
+export const cities = {
+  All: "",
+  Yerevan: "Yerevan",
+  Gyumri: "Gyumri",
+  Samara: "Samara",
+};
 export const carTypes = [
   "SUV",
   "SEDAN",
@@ -13,6 +19,23 @@ export const carTypes = [
   "PICKUP",
   "SUPERCAR",
 ];
+export const carFeatures = [
+  "GPS",
+  "ABS",
+  "PARKTRONIC",
+  "BLIND_SPOT_MONITORING",
+  "DASH_CAMERA",
+  "ALL_WHEEL_DRIVE",
+  "NAVIGATION_SYSTEM",
+  "HEATING_OF_SEATS",
+  "CENTRAL_LOCK",
+  "BLUETOOTH",
+  "REMOTE_START",
+  "ANDROID_AUTO",
+  "APPLE_CAR_PLAY",
+  "CHILD_CAR_SEAT",
+];
+
 const { makeAutoObservable } = require("mobx");
 
 class Store {
@@ -41,7 +64,7 @@ class Store {
   };
 
   setWordToLowerCase = (word) => {
-    return word[0] + word.slice(1).toLowerCase();
+    return word[0] + word.slice(1).toLowerCase().replace(/_/g, " ");
   };
 
   getCarsList = () => {
@@ -63,11 +86,9 @@ class Store {
       });
   };
 
-  getPriceRange = (location) => {
+  getPriceRange = () => {
     axios
-      .post(API + "priceRange", {
-        location: location,
-      })
+      .get(API + "priceRange")
       .then((response) => {
         this.setError(false);
         this.setPriceRangeType(response.data.response);

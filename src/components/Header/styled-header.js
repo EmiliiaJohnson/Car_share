@@ -13,7 +13,7 @@ export const StyledHeader = styled.header`
   background: #ffffffa1;
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.13);
   text-align: center;
-  z-index: 1;
+  z-index: 5;
   backdrop-filter: blur(15px);
 `;
 

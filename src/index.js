@@ -50,8 +50,10 @@ body {
 main {
   display: grid;
   grid-template-columns: repeat(1, 2fr 1fr);
+  align-items: start;
   padding: 30px 40px;
-};`;
+};
+`;
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
