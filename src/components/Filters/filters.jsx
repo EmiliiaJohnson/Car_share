@@ -3,12 +3,11 @@ import Checkbox from "@mui/joy/Checkbox";
 import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import {
   InputLabel,
-  MenuItem,
   Box,
   Slider,
   FormControlLabel,
@@ -16,6 +15,7 @@ import {
   FormLabel,
   RadioGroup,
   ListItemIcon,
+  Collapse,
 } from "@mui/material";
 import {
   Form,
@@ -24,14 +24,18 @@ import {
   StyledRadio,
   StyledFormControlLabel,
   StyledCheckbox,
+  StyledMenuItem,
+  StyledListItemIcon,
 } from "./styled-filters.js";
+import line from "../../assets/images/line.svg";
+import carType from "../../assets/images/car-type.svg";
 import axios from "axios";
 import store from "../../store/store";
 import { API, cities, carTypes, carFeatures } from "../../store/store";
 
 const Filters = () => {
   useEffect(() => {
-    store.getPriceRange(filterItems.location);
+    store.getPriceRange();
   });
 
   const [filterItems, setFilterItems] = useState({
@@ -48,6 +52,10 @@ const Filters = () => {
     carTypes: [],
     features: [],
   });
+
+  let onlyOnepriceTypeIsChecked =
+    !filterItems.price.priceType.includes("PER_DAY, PER_HOUR") &&
+    !filterItems.price.priceType.includes("PER_HOUR, PER_DAY");
 
   const setPriceRange = (priceData) => {
     const selectedPriceType =
@@ -139,7 +147,6 @@ const Filters = () => {
       }));
     }
   };
-
   const handleSliderChange = (values) => {
     setFilterItems((prevFilters) => ({
       ...prevFilters,
@@ -195,13 +202,12 @@ const Filters = () => {
         store.setLoading(false);
       });
   };
-
   return (
     <Form method="post" onSubmit={handleSubmit}>
       <Title>Filters</Title>
       <InputLabel>Location</InputLabel>
       <StyledSelect
-        IconComponent={KeyboardArrowDownIcon}
+        IconComponent={KeyboardArrowDownRoundedIcon}
         value={filterItems.location}
         name="location"
         onChange={handleChange}
@@ -211,27 +217,27 @@ const Filters = () => {
             disablePadding: true,
           },
           sx: {
-            "& .MuiMenuItem-root": {
-              fontFamily: "var(--gilroy-regular)",
+            "& .MuiPaper-root ": {
+              borderRadius: "16px",
             },
           },
         }}
       >
         {Object.entries(cities).map(([cityName, cityValue]) => (
-          <MenuItem key={cityName} value={cityValue}>
+          <StyledMenuItem key={cityName} value={cityValue}>
             <ListItemIcon>
               <LocationOnRoundedIcon sx={{ color: "var(--primary-color)" }} />
             </ListItemIcon>
             {cityName}
             {filterItems.location === cityValue && (
-              <ListItemIcon>
-                <DoneRoundedIcon sx={{ color: "var(--primary-color)" }} />
-              </ListItemIcon>
+              <StyledListItemIcon>
+                <DoneRoundedIcon />
+              </StyledListItemIcon>
             )}
-          </MenuItem>
+          </StyledMenuItem>
         ))}
       </StyledSelect>
-      <hr />
+      <img src={line} alt="" />
       Price
       <StyledFormControlLabel
         label="Per day"
@@ -257,53 +263,57 @@ const Filters = () => {
           />
         }
       />
-      {!filterItems.price.priceType.includes("PER_DAY, PER_HOUR") &&
-        !filterItems.price.priceType.includes("PER_HOUR, PER_DAY") && (
-          <div>
-            <Box>
-              <Slider
-                sx={{
-                  color: "var(--primary-color)",
-                }}
-                step={100}
-                value={[
-                  filterItems.price.priceRange.from,
-                  filterItems.price.priceRange.to,
-                ]}
-                onChange={handleSliderChange}
-                min={
-                  (store.priceRangeType[filterItems.price.priceType] || {})
-                    .from || 0
-                }
-                max={
-                  (store.priceRangeType[filterItems.price.priceType] || {})
-                    .to || 1000000
-                }
-                valueLabelDisplay="auto"
-              />
-            </Box>
-
-            <FormControl>
-              <FormLabel
-                sx={{ color: "#000", "&.Mui-focused": { color: "#000" } }}
-              >
-                Sorting order
-              </FormLabel>
-              <RadioGroup defaultValue="LOW_TO_HIGH" onChange={handleChange}>
-                <FormControlLabel
-                  value="LOW_TO_HIGH"
-                  control={<StyledRadio />}
-                  label="Low to high"
-                />
-                <FormControlLabel
-                  value="HIGH_TO_LOW"
-                  control={<StyledRadio />}
-                  label="High to low"
-                />
-              </RadioGroup>
-            </FormControl>
-          </div>
-        )}
+      <Collapse in={onlyOnepriceTypeIsChecked}>
+        <Box>
+          <Slider
+            sx={{
+              color: "var(--primary-color)",
+              width: "90%",
+              marginLeft: "10px",
+            }}
+            step={100}
+            value={[
+              filterItems.price.priceRange.from,
+              filterItems.price.priceRange.to,
+            ]}
+            onChange={handleSliderChange}
+            min={
+              (
+                (onlyOnepriceTypeIsChecked &&
+                  store.priceRangeType[filterItems.price.priceType]) ||
+                {}
+              ).from || 0
+            }
+            max={
+              (
+                (onlyOnepriceTypeIsChecked &&
+                  store.priceRangeType[filterItems.price.priceType]) ||
+                {}
+              ).to || 1000000
+            }
+            valueLabelDisplay="auto"
+          />
+        </Box>
+        <FormControl>
+          <FormLabel sx={{ color: "#000", "&.Mui-focused": { color: "#000" } }}>
+            Sorting order
+          </FormLabel>
+          <RadioGroup defaultValue="LOW_TO_HIGH" onChange={handleChange}>
+            <FormControlLabel
+              value="LOW_TO_HIGH"
+              control={<StyledRadio />}
+              label="Low to high"
+            />
+            <FormControlLabel
+              value="HIGH_TO_LOW"
+              control={<StyledRadio />}
+              label="High to low"
+            />
+          </RadioGroup>
+        </FormControl>
+      </Collapse>
+      <img src={line} alt="" />
+      Car Types
       <div role="group" aria-labelledby="rank">
         <List
           orientation="horizontal"
@@ -360,6 +370,8 @@ const Filters = () => {
           ))}
         </List>
       </div>
+      <img src={line} alt="" />
+      Features
       <div role="group" aria-labelledby="rank">
         <List
           orientation="horizontal"
@@ -416,6 +428,7 @@ const Filters = () => {
           ))}
         </List>
       </div>
+      <img src={line} alt="" />
       <button type="submit">Apply filters</button>
     </Form>
   );
