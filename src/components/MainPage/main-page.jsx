@@ -23,6 +23,7 @@ import {
   CarType,
   CarDetailsIcon,
   CarDetailsCarIcon,
+  Aside,
 } from "./styled-main-page.js";
 
 const MainPage = observer(() => {
@@ -62,8 +63,8 @@ const MainPage = observer(() => {
         {store.isLoading ? (
           <Loader />
         ) : (
-          store.carsList.map((car, index) => (
-            <CarCard key={index}>
+          store.carsList.map((car) => (
+            <CarCard to={`/cars/${car.id}`} key={car.id}>
               <ImgWrapper>
                 <CarImg src={car.imageUrls[0]} alt="car" />
               </ImgWrapper>
@@ -109,9 +110,9 @@ const MainPage = observer(() => {
           ))
         )}
       </CarsList>
-      <aside className="filters">
+      <Aside>
         <Filters />
-      </aside>
+      </Aside>
     </>
   );
 });

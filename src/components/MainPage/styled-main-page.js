@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const CarsList = styled.div`
   width: 70%;
@@ -22,7 +23,9 @@ export const ImgWrapper = styled.div`
   border-radius: 16px 16px 0px 0px;
 `;
 
-export const CarCard = styled.div`
+export const CarCard = styled(Link)`
+  text-decoration: none;
+  color: #000;
   cursor: pointer;
   width: 250px;
   height: 300px;
@@ -97,4 +100,13 @@ export const CarOwnerLocationIcon = styled.img`
 
 export const CarOwnerInfo = styled.p`
   margin-left: 10px;
+`;
+
+export const Aside = styled.aside`
+  height: calc(100vh - 140px);
+  overflow: scroll;
+  position: sticky;
+  top: 120px;
+  width: min-content;
+  border-radius: 16px;
 `;

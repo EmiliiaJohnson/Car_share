@@ -7,12 +7,10 @@ import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownR
 import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import {
-  InputLabel,
   Box,
   Slider,
   FormControlLabel,
   FormControl,
-  FormLabel,
   RadioGroup,
   ListItemIcon,
   Collapse,
@@ -26,6 +24,8 @@ import {
   StyledCheckbox,
   StyledMenuItem,
   StyledListItemIcon,
+  StyledFormLabel,
+  StyledButton,
 } from "./styled-filters.js";
 import line from "../../assets/images/line.svg";
 import carType from "../../assets/images/car-type.svg";
@@ -51,6 +51,7 @@ const Filters = () => {
     },
     carTypes: [],
     features: [],
+    transmissionTypes: ["MANUAL", "AUTO", "OTHER"],
   });
 
   let onlyOnepriceTypeIsChecked =
@@ -131,6 +132,18 @@ const Filters = () => {
             features: prevFilters.features.filter((item) => item !== value),
           }));
         }
+      } else if (name === "transmission") {
+        if (checked) {
+          setFilterItems((prevFilters) => ({
+            ...prevFilters,
+            transmissionTypes: [value],
+          }));
+        } else {
+          setFilterItems((prevFilters) => ({
+            ...prevFilters,
+            transmissionTypes: ["MANUAL", "AUTO", "OTHER"],
+          }));
+        }
       }
     } else if (type === "radio") {
       setFilterItems((prevFilters) => ({
@@ -205,7 +218,7 @@ const Filters = () => {
   return (
     <Form method="post" onSubmit={handleSubmit}>
       <Title>Filters</Title>
-      <InputLabel>Location</InputLabel>
+      <StyledFormLabel>Location</StyledFormLabel>
       <StyledSelect
         IconComponent={KeyboardArrowDownRoundedIcon}
         value={filterItems.location}
@@ -238,7 +251,7 @@ const Filters = () => {
         ))}
       </StyledSelect>
       <img src={line} alt="" />
-      Price
+      <StyledFormLabel>Price</StyledFormLabel>
       <StyledFormControlLabel
         label="Per day"
         control={
@@ -295,9 +308,7 @@ const Filters = () => {
           />
         </Box>
         <FormControl>
-          <FormLabel sx={{ color: "#000", "&.Mui-focused": { color: "#000" } }}>
-            Sorting order
-          </FormLabel>
+          <StyledFormLabel>Sorting order</StyledFormLabel>
           <RadioGroup defaultValue="LOW_TO_HIGH" onChange={handleChange}>
             <FormControlLabel
               value="LOW_TO_HIGH"
@@ -313,7 +324,7 @@ const Filters = () => {
         </FormControl>
       </Collapse>
       <img src={line} alt="" />
-      Car Types
+      <StyledFormLabel>Car Types</StyledFormLabel>
       <div role="group" aria-labelledby="rank">
         <List
           orientation="horizontal"
@@ -371,7 +382,7 @@ const Filters = () => {
         </List>
       </div>
       <img src={line} alt="" />
-      Features
+      <StyledFormLabel>Features</StyledFormLabel>
       <div role="group" aria-labelledby="rank">
         <List
           orientation="horizontal"
@@ -429,7 +440,19 @@ const Filters = () => {
         </List>
       </div>
       <img src={line} alt="" />
-      <button type="submit">Apply filters</button>
+      <StyledFormLabel>Transmission</StyledFormLabel>
+      <StyledFormControlLabel
+        label="Automatic only"
+        control={
+          <StyledCheckbox
+            name="transmission"
+            value="AUTO"
+            onChange={handleChange}
+          />
+        }
+      />
+
+      <StyledButton type="submit">Apply filters</StyledButton>
     </Form>
   );
 };

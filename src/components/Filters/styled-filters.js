@@ -6,13 +6,13 @@ import {
   FormControlLabel,
   MenuItem,
   ListItemIcon,
+  FormLabel,
 } from "@mui/material";
 
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
   padding: 30px;
-  border-radius: 16px;
   background-color: #fff;
 `;
 
@@ -95,5 +95,34 @@ export const StyledListItemIcon = styled(ListItemIcon)`
     color: var(--primary-color);
     min-width: auto !important;
     justify-self: flex-end;
+  }
+`;
+
+export const StyledFormLabel = styled(FormLabel)`
+  &.MuiFormLabel-root {
+    color: #8d8d8d;
+    font-family: var(--gilroy-regular);
+  }
+  &&.Mui-focused {
+    color: #8d8d8d;
+  }
+`;
+
+export const StyledButton = styled.button`
+  min-height: 40px;
+  border: none;
+  border-radius: 24px;
+  font-family: var(--gilroy-medium);
+  background-color: var(--primary-color);
+  color: #fff;
+  font-size: 16px;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.05);
+  }
+  &:active {
+    transform: scale(1);
   }
 `;
